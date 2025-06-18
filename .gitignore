@@ -1,0 +1,9 @@
+indexes/
+docs_jsonl/
+**/__pycache__/
+**/.DS_Store
+.RData
+.Rhistory
+ctrs.lmdb
+dataset/
+!dataset/.gitkeep
