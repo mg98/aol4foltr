@@ -34,8 +34,7 @@ if __name__ == "__main__":
     parser.add_argument('--job-count', type=int, help='Total number of jobs')
     args = parser.parse_args()
     
-    df = pd.read_csv('dataset/aol_dataset.csv', parse_dates=['time'], low_memory=False)
-    df = df.sample(frac=1).copy()
+    df = pd.read_csv('dataset/metadata.csv', parse_dates=['time'], low_memory=False)
     
     if args.job_id is not None and args.job_count is not None:
         df = df[df.index % args.job_count == args.job_id].copy()
@@ -43,35 +42,13 @@ if __name__ == "__main__":
     else:
         print(f"Processing {len(df)} rows...")
 
-
     df['candidate_doc_ids'] = df['candidate_doc_ids'].apply(ast.literal_eval)
-
-    #####
-    import ir_datasets
-    dataset = ir_datasets.load("aol-ia")
-    docs_store = dataset.docs_store()
-    print("Filtering records with invalid doc IDs...")
-    valid_indices = []
-    for idx, row in tqdm(df.iterrows(), total=len(df), desc="Checking records"):
-        valid = True
-        for docid in row['candidate_doc_ids']:
-            try:
-                doc = docs_store.get(docid)
-            except KeyError:
-                valid = False
-                break
-        if valid:
-            valid_indices.append(idx)
-    
-    print(f"Kept {len(valid_indices)} valid records out of {len(df)} total")
-    df = df.loc[valid_indices].copy()
-    #####
     
     query_ctrs = compile_clickthrough_records(df, True)
 
     print("Writing results to LMDB...")
 
-    db_path = f'ctrs_{args.job_id+1}.lmdb' if args.job_id is not None else 'ctrs.lmdb'
+    db_path = f'dataset/ctrs_{args.job_id+1}.lmdb' if args.job_id is not None else 'dataset/ctrs.lmdb'
     with lmdb.open(db_path, map_size=2**40) as db:
         with db.begin(write=True) as txn:
             for query_id, ctrs in tqdm(query_ctrs.items(), total=len(query_ctrs), desc="Writing to LMDB"):

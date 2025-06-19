@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 random.seed(42)
 
-db = lmdb.open('ctrs.lmdb', readonly=True)
+db = lmdb.open('dataset/ctrs.lmdb', readonly=True)
 
 df = pd.read_csv(args.ds, parse_dates=['time'])
 df = df.sort_values('time')

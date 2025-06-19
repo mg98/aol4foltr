@@ -527,35 +527,7 @@ class ClickThroughRecord:
     
     def to_array(self) -> np.ndarray:
         return np.array([self.rel, self.qid, *self.feat.features], dtype=np.float32)
-
-    # def normalize(self, means: np.ndarray, stds: np.ndarray):
-    #     # features that are already between 0 and 1
-    #     features_without_logarithm = list(range(27)) + [28, 32, 33] + list(range(34, 61)) + [62, 66, 67] + list(range(69, 69+2*768))
-    #     # features that are negative
-    #     features_negative = []
-        
-    #     feats = np.array(self.feat.features, dtype=np.float32)
-    #     feats_normalized = np.zeros_like(feats)
-        
-    #     eps_log = 1e-2
-    #     eps = 1e-6
-        
-    #     for i, feature_value in enumerate(feats):
-    #         if i in features_negative:
-    #             feature_value = (-1) * feature_value
-    #         if i not in features_without_logarithm:
-    #             # log only if value >= 0
-    #             if feature_value >= 0:
-    #                 feature_value = np.log(feature_value + eps_log)
-    #             else:
-    #                 print("Feature no. {} value is < 0 which is why the feature won't be normalized".format(i))
-    #         mean = means[i]
-    #         std = stds[i]
-    #         feats_normalized[i] = (feature_value - mean) / (std + eps)
-        
-    #     # Update the feat attribute with normalized features
-    #     self.feat = FeatureVector.from_array(feats_normalized)
-
+    
     def __str__(self):
         return f'{int(self.rel)} qid:{self.qid} {self.feat}'
     

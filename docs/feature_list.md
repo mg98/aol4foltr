@@ -1,6 +1,6 @@
 # Feature List
 
-Each query-url pair is represented by a 103-dimensional vector, see [code](./ltr/types.py).
+Each query-url pair is represented by a 103-dimensional vector, see [code](../ltr/types.py).
 
 <table>
 <thead>

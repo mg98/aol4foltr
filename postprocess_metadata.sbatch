@@ -13,10 +13,10 @@ conda init bash
 source ~/.bashrc
 conda activate pyserini
 
-head -n 1 aol_0_12.csv > output.csv
-tail -n +2 -q aol_*_*.csv >> output.csv
+head -n 1 dataset/metadata_0_12.csv > dataset/temp.csv
+tail -n +2 -q dataset/metadata_*_*.csv >> dataset/temp.csv
 
-rm aol_*_*.csv
-mv output.csv aol_dataset_raw.csv
+rm dataset/metadata_*_*.csv
+mv dataset/temp.csv dataset/metadata_raw.csv
 
-python postprocess.py
+python postprocess_metadata.py

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=foltr
-#SBATCH --array=0-12
+#SBATCH --array=0-11
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --time=0
