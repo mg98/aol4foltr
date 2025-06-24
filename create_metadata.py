@@ -13,9 +13,8 @@ parser.add_argument('--k', type=int, default=20, help='Window size for candidate
 args = parser.parse_args()
 
 dataset = ir_datasets.load("aol-ia")
-searcher = LuceneSearcher('indexes/docs_jsonl')
-
 docs_store = dataset.docs_store()
+searcher = LuceneSearcher('indexes/docs_jsonl')
 
 qlogs = []
 for qlog in tqdm(dataset.qlogs_iter(), total=dataset.qlogs_count(), desc="Prepare qlogs"):
@@ -23,12 +22,19 @@ for qlog in tqdm(dataset.qlogs_iter(), total=dataset.qlogs_count(), desc="Prepar
         continue
     if len(qlog.items) != 1:
         continue
+    
+    target_doc_id = qlog.items[0].doc_id
+    try:
+        docs_store.get(target_doc_id)
+    except KeyError as e:
+        continue
+    
     qlogs.append({
         'query_id': qlog.query_id,
         'query': qlog.query.strip().lower(),
         'timestamp': qlog.time,
         'user_id': qlog.user_id,
-        'target_doc_id': qlog.items[0].doc_id,
+        'target_doc_id': target_doc_id,
     })
 
 qlogs = pd.DataFrame(qlogs)
@@ -87,7 +93,7 @@ def process_qlog(searcher, qlog):
         'user_id': qlog.user_id,
         'timestamp': qlog.timestamp,
         'query': qlog.query,
-        'doc_id': qlog.target_doc_id,
+        'target_doc_id': qlog.target_doc_id,
         'candidate_doc_ids': docs
     }
 

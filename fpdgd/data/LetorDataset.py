@@ -14,16 +14,16 @@ class LetorDataset(AbstractDataset):
                  query_level_norm=False,
                  binary_label=0,
                  cache_root=None,
-                 blacklisted_features=set()
+                 global_level_norm=set()
                  ):
         super().__init__(path, feature_size, query_level_norm)
+
         self._binary_label = binary_label
         self._comments = {}
         self._docid_map = {}
-        self._blacklisted_features = set(blacklisted_features)
+        self._global_level_norm = set(global_level_norm)
         self._global_min = None
         self._global_max = None
-        # self._docstr_map = {}
 
         if cache_root is not None:
             new = self.from_path(path, cache_root)
@@ -40,8 +40,8 @@ class LetorDataset(AbstractDataset):
         else:
             self._load_data()
             
-        # Compute global min/max for blacklisted features after loading data
-        if self._blacklisted_features:
+        # Compute global min/max for global_level_norm features after loading data
+        if self._global_level_norm:
             self._compute_global_stats()
 
     def from_path(self, path: str, cache_root: str) -> 'LetorDataset':
@@ -137,7 +137,7 @@ class LetorDataset(AbstractDataset):
             self._normalise(current_query)
 
     def _compute_global_stats(self):
-        """Compute global min/max statistics for blacklisted features across all queries."""
+        """Compute global min/max statistics for global_level_norm features across all queries."""
         all_features = []
         for query in self.get_all_querys():
             all_features.append(self._query_get_all_features[query])
@@ -147,10 +147,10 @@ class LetorDataset(AbstractDataset):
             self._global_min = np.amin(all_features, axis=0)
             self._global_max = np.amax(all_features, axis=0)
             
-            # Normalize blacklisted features globally
+            # Normalize global_level_norm features
             for query in self.get_all_querys():
                 features = self._query_get_all_features[query]
-                for feature_idx in self._blacklisted_features:
+                for feature_idx in self._global_level_norm:
                     if self._global_max[feature_idx] - self._global_min[feature_idx] != 0:
                         features[:, feature_idx] = (features[:, feature_idx] - self._global_min[feature_idx]) / (
                             self._global_max[feature_idx] - self._global_min[feature_idx])
@@ -164,9 +164,9 @@ class LetorDataset(AbstractDataset):
             min = np.amin(query_features, axis=0)
             max = np.amax(query_features, axis=0)
             safe_ind = max - min != 0
-            # Only normalize non-blacklisted features
+            # Only normalize non-global_level_norm features
             for i in range(self._feature_size):
-                if i in self._blacklisted_features:
+                if i in self._global_level_norm:
                     norm[:, i] = query_features[:, i]
                 elif safe_ind[i]:
                     norm[:, i] = (query_features[:, i] - min[i]) / (max[i] - min[i])

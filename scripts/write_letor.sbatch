@@ -5,12 +5,9 @@
 #SBATCH --ntasks=1
 #SBATCH --time=0
 
-export JAVA_HOME=~/jdk-21.0.6
-export PATH=$JAVA_HOME/bin:$PATH
-
 conda init bash
 source ~/.bashrc
 conda activate pyserini
 
-rm -rf ctrs.lmdb
-python merge_ctrs.py
+rm -f dataset/letor.txt
+python write_letor.py --ds dataset/metadata.csv --output dataset/letor.txt

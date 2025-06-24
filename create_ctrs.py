@@ -34,7 +34,7 @@ if __name__ == "__main__":
     parser.add_argument('--job-count', type=int, help='Total number of jobs')
     args = parser.parse_args()
     
-    df = pd.read_csv('dataset/metadata.csv', parse_dates=['time'], low_memory=False)
+    df = pd.read_csv('dataset/metadata.csv', parse_dates=['timestamp'], low_memory=False)
     
     if args.job_id is not None and args.job_count is not None:
         df = df[df.index % args.job_count == args.job_id].copy()

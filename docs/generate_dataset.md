@@ -36,13 +36,15 @@ The final dataset consists of two files:
 
 - `metadata.csv` (~1 GB)
 - `letor.txt` (~55 GB)
+- `indexes/` (~7 GB)
+- `ctrs.lmdb` (~28 GB)
 
 1. **Indexing:** Creates an index of the entire corpus of AOL-IA. Output goes to a new folder `indexes/` (~7 GB). Folder can be deleted after dataset creation. _(estimated time: 15 minutes)_
-2. **Reconstruct results:** Reconstructs top-k results for each query log.
-3. **Postprocessing:** Merges created metadata files and creation of _qids_.
-4. **Creating CTRs:** Creates _Clickthrough Records (CTRs)_ for every query-document pair. A CTR contain qid, relevance label, and computed features. Results are stored into an LMDB, where each qid maps to a list of `k` CTRs (for `k` candidate documents). The CTRs are stored as numpy arrays to save space.
+2. **Create metadata:** Reconstructs top-k results for each query log. _(estimated time: 11x12x64 CPU hours)_
+3. **Merge metadata:** Merges created metadata files and creation of _qids_.
+4. **Creating CTRs:** Creates _Clickthrough Records (CTRs)_ for every query-document pair. A CTR contain qid, relevance label, and computed features. Results are stored into an LMDB, where each qid maps to a list of `k` CTRs (for `k=20` candidate documents). The CTRs are stored as numpy arrays to save space. _(estimated time: 3x12x64 CPU hours)_
 5. **Merge CTRs:** Unifies created LMDBs into one.
-6. **Write LETOR:** Writes dataset to disk in LETOR format. Records are created based on metadata input; LMDB is used for lookup.
+6. **Write LETOR:** Writes dataset to disk in LETOR format. Records are created based on metadata input; LMDB is used for lookup. _(estimated time: 90 minutes)_
 
 You can run all steps in sequence by submitting the following job chain:
 

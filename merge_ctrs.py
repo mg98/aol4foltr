@@ -6,7 +6,7 @@ import shutil
 
 def combine_lmdb_files():
     # Find all individual LMDB files
-    lmdb_files = sorted(glob.glob('ctrs_*.lmdb'))
+    lmdb_files = sorted(glob.glob('dataset/ctrs_*.lmdb'))
     if not lmdb_files:
         print("No individual LMDB files found!")
         return

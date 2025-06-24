@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #SBATCH --job-name=foltr
-#SBATCH --array=0-11
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --time=0
@@ -13,8 +12,5 @@ conda init bash
 source ~/.bashrc
 conda activate pyserini
 
-srun zsh -c "
-    python ./reconstruct_results.py \
-        --job-id=${SLURM_ARRAY_TASK_ID} \
-        --job-count=${SLURM_ARRAY_TASK_COUNT}
-"
+rm -rf dataset/ctrs.lmdb
+python merge_ctrs.py

@@ -36,7 +36,7 @@ def compile_clickthrough_records(
         ctr_arrays: list[np.ndarray] = []
         for doc in candidate_docs:
             feats = FeatureVector.make(candidate_docs, doc, row['query'])
-            ctr = ClickThroughRecord(doc.doc_id == row['doc_id'], row['query_id'], feats)
+            ctr = ClickThroughRecord(doc.doc_id == row['target_doc_id'], row['qid'], feats)
             ctr_arrays.append(ctr.to_array())
         
         return ctr_arrays
@@ -45,9 +45,9 @@ def compile_clickthrough_records(
         query_ctrs = Parallel(n_jobs=-1, batch_size=1024)(
             delayed(process_query)(query_row) for _, query_row in tqdm(df.iterrows(), total=len(df), desc="Processing rows for CTRs")
         )
-        ctrs = {str(query_row['query_id']): ctr_arrays for (_, query_row), ctr_arrays in zip(df.iterrows(), query_ctrs)}
+        ctrs = {str(query_row['qid']): ctr_arrays for (_, query_row), ctr_arrays in zip(df.iterrows(), query_ctrs)}
     else:
-        ctrs = {str(query_row['query_id']): process_query(query_row) 
+        ctrs = {str(query_row['qid']): process_query(query_row) 
                 for _, query_row in tqdm(df.iterrows(), total=len(df), desc="Processing rows for CTRs")}
     return ctrs
 

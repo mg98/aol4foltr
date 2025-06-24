@@ -122,7 +122,7 @@ def average_ndcg_at_k(dataset, query_result_list, k):
 def average_mrr_at_k(dataset: LetorDataset, query_result_list, k):
     rr = 0
     num_query = 0
-    for query in dataset.get_all_querys():
+    for query in query_result_list.keys():
         if len(dataset.get_relevance_docids_by_query(query)) == 0: # for this query, ranking list is None
             continue
         got_rr = False

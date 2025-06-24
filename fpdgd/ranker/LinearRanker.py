@@ -48,10 +48,13 @@ class LinearRanker(AbstractRanker):
             query_result_list.append(docid)
         return query_result_list
 
-    def get_all_query_result_list(self, dataset):
+    def get_all_query_result_list(self, dataset, qids = None):
+        if qids is None:
+            qids = dataset.get_all_querys()
+        
         query_result_list = {}
 
-        for query in dataset.get_all_querys():
+        for query in qids:
             docid_list = np.array(dataset.get_candidate_docids_by_query(query))
             docid_list = docid_list.reshape((len(docid_list), 1))
             feature_matrix = dataset.get_all_features_by_query(query)
