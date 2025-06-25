@@ -1,6 +1,6 @@
 # How To Use
 
-This document explains how to load and use this dataset for FOLTR.
+This document explains how to load and use this dataset for Federated Online Learning-to-Rank (FOLTR).
 
 AOL4FOLTR consists of two files: `metadata.csv` and `letor.txt` (i.e., after decompression): both files are linked via the 'qid' attribute.
 We intentionally used open standard formats to ensure broad accessibility and ease of use with popular libraries such as `pandas`.
@@ -18,4 +18,4 @@ metadata = Metadata('dataset/metadata.csv')
 letor_ds = AOL4FOLTRDataset('dataset/letor.txt')
 ```
 
-For a full example of how to use this dataset, please refer to [experiment.py](../experiment.py).
+For a full example of how to use this dataset for FOLTR, please refer to [experiment.py](../experiment.py).
