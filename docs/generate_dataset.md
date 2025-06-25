@@ -30,7 +30,7 @@ tar -xvzf jdk-21.0.6_linux-x64_bin.tar.gz
 rm jdk-21.0.6_linux-x64_bin.tar.gz
 ```
 
-### Step 3: Compile Dataset from Sources
+## Step 3: Compile Dataset from Sources
 
 The final dataset consists of two files:
 
