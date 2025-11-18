@@ -1,6 +1,6 @@
 # AOL4FOLTR
 
-This repository contains the source code to generate the dataset and results presented in the paper _"AOL4FOLTR: A Large-Scale Web Search Dataset for Federated Online Learning to Rank"_ (just accepted at CIKM'25, [preprint](https://arxiv.org/pdf/2508.12353)).
+This repository contains the source code to generate the dataset and results presented our CIKM'25 publication _"AOL4FOLTR: A Large-Scale Web Search Dataset for Federated Online Learning to Rank"_ [[paper](https://dl.acm.org/doi/10.1145/3746252.3761651)].
 
 **AOL4FOLTR** is a dataset specifically tailored with its use in _Federated Online Learning-to-Rank_ (short: _FOLTR_) in mind.
 It contains raw search queries and document contents, user IDs, and timestamps, based on [AOL-IA](https://ir-datasets.com/aol-ia.html), and originally, the 2006 AOL query logs.
